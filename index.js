@@ -12,6 +12,7 @@ mongoose.connect("mongodb://admin:kyc%406868@18.138.122.229:27017/?authSource=ad
 });
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
+var count = 1;
 
 const getCategories = async (inputLink) => {
     try {
@@ -61,6 +62,7 @@ const getCategories = async (inputLink) => {
     }
 }
 const getProducts = async (link) => {
+    count = 1;
     try {
         let browser2 = await puppeteer.launch();
         let page2 = await browser2.newPage();
@@ -126,7 +128,6 @@ const getProducts = async (link) => {
         console.log(`==GET_PRODUCTS_ERROR==`, error);
     }
 }
-var count = 0;
 const getProductInfo = async (link) => {
     try {
         let browser3 = await puppeteer.launch()
@@ -161,7 +162,8 @@ const getProductInfo = async (link) => {
             product.Des = document.querySelector(`#tinhnang`).innerText;
             return product;
         });
-        console.log(`${count}-Product Detail:`, productInfo);
+        // console.log(`${count}-Product Detail:`, productInfo);
+        console.log(`  + ${count}-${productInfo.Name}`)
         count++;
         await browser3.close();
     } catch (error) {
