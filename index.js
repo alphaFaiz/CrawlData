@@ -13,7 +13,7 @@ mongoose.connect("mongodb://admin:kyc%406868@18.138.122.229:27017/?authSource=ad
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 var count = 1;
-
+var totalCount = 0;
 const getCategories = async (inputLink) => {
     try {
         let browser = await puppeteer.launch()
@@ -120,6 +120,7 @@ const getProducts = async (link) => {
         // allProducts.push(...productsResult)
         // console.log('Return:', productsResult);
         console.log(`Tổng số sản phẩm:`, finalProductList.length);
+        totalCount += finalProductList.length;
         for (let i = 0; i < finalProductList.length; i++) {
             await getProductInfo(finalProductList[i].link);
         }
@@ -172,9 +173,11 @@ const getProductInfo = async (link) => {
     }
 }
 (async () => {
+    await
     // getCategories('http://khoahuyhoang.net/san-pham-danh-cho-cua-go/');
     getCategories('http://khoahuyhoang.net/san-pham-danh-cho-cua-go/khoa-tay-nam/');
     // getProducts('http://khoahuyhoang.net/khoa-tay-nam/khoa-tay-nam-huy-hoang-tieu-chuan-chau-au/');
     // getProducts('http://khoahuyhoang.net/khoa-tay-nam-hc/khoa-hc-85/');
     // getProductInfo('http://khoahuyhoang.net/tay-nam-cua-jaguar-pvd-gold/TNCHCJAG-PVDGO.html')
+    console.log(`====================\nTổng số sản phẩm đã thêm: ${totalCount} sản phẩm`)
 })()
