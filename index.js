@@ -37,14 +37,14 @@ const getCategories = async (inputLink) => {
             // let description = document.querySelector('.page_catalog .content') ? document.querySelector('.page_catalog .content').innerText :
             //     (document.querySelector('.page_catalog .intro div') ? document.querySelector('.page_catalog .intro div').innerText : document.querySelector('.page_catalog .intro span').innerText);
             // return { Name: CategoryName, OriginLink: originLink, Img: CategoryImg, Description: description, ChildCategoriesLinks: childCategoriesLinks }
-            return { OriginLink: originLink, ChildCategoriesLinks: childCategoriesLinks}
+            return { categoryName: document.querySelectorAll('.path a')[document.querySelectorAll('.path a').length - 1].innerText, OriginLink: originLink, ChildCategoriesLinks: childCategoriesLinks}
         });
 
-        // console.log('Category:', results)
+        console.log(`_________\n${results.categoryName} có ${results.ChildCategoriesLinks.length} danh mục con.`)
         await browser.close();
 
         if (results.ChildCategoriesLinks.length == 0) {
-            getProducts(results.OriginLink);
+            await getProducts(results.OriginLink);
         } else {
             for (let i = 0; i < results.ChildCategoriesLinks.length; i++) {
                 await getCategories(results.ChildCategoriesLinks[i].link)
@@ -117,9 +117,9 @@ const getProducts = async (link) => {
         await browser2.close();
         // allProducts.push(...productsResult)
         // console.log('Return:', productsResult);
-        console.log(`==${categoryName}==\nFinal Products List:`, finalProductList.length);
+        console.log(`Tổng số sản phẩm:`, finalProductList.length);
         for (let i = 0; i < finalProductList.length; i++) {
-            // await getProductInfo(finalProductList[i].link);
+            await getProductInfo(finalProductList[i].link);
         }
     } catch (error) {
         console.log(link);
@@ -171,8 +171,8 @@ const getProductInfo = async (link) => {
 }
 (async () => {
     // getCategories('http://khoahuyhoang.net/san-pham-danh-cho-cua-go/');
-    // getCategories('http://khoahuyhoang.net/san-pham-danh-cho-cua-go/khoa-tay-nam/');
+    getCategories('http://khoahuyhoang.net/san-pham-danh-cho-cua-go/khoa-tay-nam/');
     // getProducts('http://khoahuyhoang.net/khoa-tay-nam/khoa-tay-nam-huy-hoang-tieu-chuan-chau-au/');
-    getProducts('http://khoahuyhoang.net/khoa-tay-nam-hc/khoa-hc-85/');
+    // getProducts('http://khoahuyhoang.net/khoa-tay-nam-hc/khoa-hc-85/');
     // getProductInfo('http://khoahuyhoang.net/tay-nam-cua-jaguar-pvd-gold/TNCHCJAG-PVDGO.html')
 })()
