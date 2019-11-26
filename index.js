@@ -80,7 +80,7 @@ const getProducts = async (link) => {
                     })
                 });
             }
-            if (document.querySelector('.pagination')) {
+            if (document.querySelector('.pagination li')) {
                 maxPage = document.querySelectorAll('.pagination a')[document.querySelectorAll('.pagination a').length - 2].innerText;
                 // if (curPage <= maxPage && document.querySelector(`[href="javascript:gotopage(${curPage})"]`)) {
                 //     document.querySelector(`[href="javascript:gotopage(${curPage})"]`).click();
@@ -105,7 +105,8 @@ const getProducts = async (link) => {
                 // await page2.goto(link, { waitUntil: 'load', timeout: 0 });
                 let nextPage = await browser2.newPage();
                 await nextPage.goto(link, { waitUntil: 'load', timeout: 0 });
-                await nextPage.click(`[href="javascript:gotopage(${i})"]`);
+                await nextPage.$eval(`[href="javascript:gotopage(${i})"]`, elem => elem.click());
+                await nextPage.waitForNavigation();
                 let pagesResult = await nextPage.evaluate(() => {
                     let products = [];
                     let productsSelector = document.querySelectorAll('.catalog_plist .box .product');
