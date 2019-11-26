@@ -82,13 +82,14 @@ const getProducts = async (link) => {
             if (document.querySelector('.pagination li')) {
                 maxPage = document.querySelectorAll('.pagination a')[document.querySelectorAll('.pagination a').length - 2].innerText;
                 createData();
-                return { products: products, maxPage: maxPage }
+                return {categoryName: document.querySelectorAll('.path a')[document.querySelectorAll('.path a').length - 1].innerText, products: products, maxPage: maxPage }
             } else {
                 createData();
-                return { products: products, maxPage: maxPage }
+                return {categoryName: document.querySelectorAll('.path a')[document.querySelectorAll('.path a').length - 1].innerText, products: products, maxPage: maxPage }
             }
             // return products;
         });
+        let categoryName = productsResult.categoryName;
         finalProductList.push(...productsResult.products);
         if (productsResult.maxPage > 1) {
             for (let i = 2; i <= productsResult.maxPage; i++) {
@@ -116,9 +117,9 @@ const getProducts = async (link) => {
         await browser2.close();
         // allProducts.push(...productsResult)
         // console.log('Return:', productsResult);
-        console.log('Final Products List:', finalProductList.length);
+        console.log(`==${categoryName}==\nFinal Products List:`, finalProductList.length);
         for (let i = 0; i < finalProductList.length; i++) {
-            await getProductInfo(finalProductList[i].link);
+            // await getProductInfo(finalProductList[i].link);
         }
     } catch (error) {
         console.log(link);
